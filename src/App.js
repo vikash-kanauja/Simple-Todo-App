@@ -1,18 +1,19 @@
-import TodoItem from "./component/TodoItem.js"; 
-import Button from "react-bootstrap/Button"; 
-import { useState } from "react"; 
+import { useState } from "react";
+import TodoItem from "./component/TodoItem.js";
+import Button from "react-bootstrap/Button";
+
 
 function App() {
   // State variables
-  const [todos, setTodos] = useState([]); // State for storing todo tasks
-  const [todoText, setTodoText] = useState(""); // State for input value
-  const [inputValid, setInputValid] = useState(true); // State for input validation
-  const [id, setId] = useState(null); // State for tracking todo item id being updated
+  const [todoList, setTodoList] = useState([]); // State for storing todo tasks
+  const [inputText, setInputText] = useState(""); // State for input value
+  const [inputError, setInputError] = useState(true); // State for input validation
+  const [editTodoId, setEditTodoId] = useState(null); // State for tracking todo item id being updated
 
   // Function to toggle todo completion status
-  const toggle = (id) => {
-    setTodos(
-      todos.map((task) => {
+  const toggleCompleteBadge = (id) => {
+    setTodoList(
+      todoList.map((task) => {
         if (task.id === id) {
           return { ...task, completed: !task.completed };
         } else {
@@ -23,97 +24,98 @@ function App() {
   };
 
   // Function to handle input change
-  const handleChange = (e) => {
+  const handleInputChange = (e) => {
     const value = e.target.value;
-    setTodoText(value);
+    setInputText(value);
     // Validate input (not empty)
-    setInputValid(value.trim() !== "");
+    setInputError(value.trim() !== "");
   };
 
   // Function to handle form submission
   const handleSubmit = (e) => {
-    e.preventDefault();
     // Validate input on submit
-    if (todoText.trim() === "") {
-      setInputValid(false);
+    if (inputText.trim() === "") {
+      setInputError(false);
       return;
     }
     // Check if an existing todo is being updated
-    if (id !== null) {
-      // Update existing todo
-      setTodos((prevTasks) =>
+    if (editTodoId !== null) {
+      // Update existing todo.
+      setTodoList((prevTasks) =>
         prevTasks.map((task) =>
-          task.id === id ? { ...task, text: todoText.trim() } : task
+          task.id === editTodoId ? { ...task, text: inputText.trim() } : task
         )
       );
-      setTodoText(""); // Clear input
-      setId(null); // Clear id
+      setInputText(""); // Clear input
+      setEditTodoId(null); // Clear id
     } else {
       // Add new todo
-      setTodos((prev) => [
+      setTodoList((prev) => [
         {
           id: prev.length + 1,
-          text: todoText.trim(),
+          text: inputText.trim(),
           completed: false,
         },
         ...prev,
       ]);
-      setTodoText(""); // Clear input
+      setInputText(""); // Clear input
     }
   };
 
   // Function to delete a todo
   const deleteTodo = (id) => {
-    setTodos(todos.filter((data) => data.id !== id));
-    setId(null);
-    setTodoText(""); 
+    setTodoList(todoList.filter((data) => data.id !== id));
+    setEditTodoId(null);
+    setInputText("");
   };
 
   // Function to update a todo
-  const updateTodo = (id) => {
-    const newData = todos.filter((data) => data.id === id);
-    setTodoText(newData[0].text); // Set input value to todo text
-    setId(newData[0].id); // Set id to the id of the todo being updated
+  const editTodo = (todo) => {
+    setInputText(todo.text); // Set input value to todo text
+    setEditTodoId(todo.id); // EditTodoId id to the id of the todo being updated
   };
 
   return (
     <>
       <div className="container ">
-        {/* Conditional rendering based on todo list length */}
         <div className="my-4">
-        {todos.length < 1 ? <h1>Todo is empty</h1> : <h1>Todo App</h1>}
+          <h1>Todo App</h1>
         </div>
         {/* Rendering todo items */}
-        {todos.map((task, index) => (
+        {todoList.map((task, index) => (
+          
           <TodoItem
             key={index}
             id={task.id}
             task={task}
-            toggle={toggle}
+            toggleCompleteBadge={toggleCompleteBadge}
             deleteTodo={deleteTodo}
-            updateTodo={updateTodo}
+            editTodo={editTodo}
           />
         ))}
         {/* Todo input form */}
+        <div className="my-4">
         <div className="my-2">
-       { id ?<h4>Update Todo</h4>:<h4>Todo</h4>} 
-       </div>
+          {editTodoId ? <h4>Update Todo</h4> : <h4>Todo</h4>}
+        </div>
         <input
           type="text"
-          className={` ${
-            inputValid ? "" : "border-danger border"
-          } form-control w-100 p-2 my-2 shadow-none `}
-          value={todoText}
-          onChange={handleChange}
+          className={` ${inputError ? "" : "border-danger border"
+            } form-control w-100 p-2 my-2 shadow-none `}
+          value={inputText}
+          onChange={handleInputChange}
         />
         {/* Submit button */}
         <Button
           variant="light"
-          className="border-1 border-secondary"
+          className={ `${!inputError ? "opacity-10 " : "" }   border-1 border-secondary`}
           onClick={handleSubmit}
+          disabled={!inputText.trim()}
+          
         >
-         {id  ? "Update" : "Submit"} 
+          {editTodoId ? "Update" : "Submit"}
         </Button>{" "}
+        </div>
       </div>
     </>
   );

@@ -1,12 +1,10 @@
 import React from "react";
-import { MdDelete } from "react-icons/md";
-import { RiEditBoxFill } from "react-icons/ri";
+import { RiDeleteBin5Fill } from "react-icons/ri";
+import { MdOutlineModeEditOutline } from "react-icons/md";
 
-const TodoItem = ({ id, task, toggle, deleteTodo, updateTodo }) => {
-    // Function to handle checkbox change
-    const handleChange = () => {
-        toggle(id);
-    };
+
+
+const TodoItem = ({ id, task, toggleCompleteBadge, deleteTodo, editTodo }) => {
     return (
         // Container for todo item
         <div
@@ -17,18 +15,18 @@ const TodoItem = ({ id, task, toggle, deleteTodo, updateTodo }) => {
                 <input
                     type="checkbox"
                     checked={task.completed}
-                    onChange={handleChange}
+                    // onChange={handleChange}
+                    onChange={()=>toggleCompleteBadge(id)}
                 />
                 <p className="mb-0 px-2">{task.text}</p>
             </div>
-            <div className="d-flex justify-content-cente .align-items-center gap-2">
+            <div className="d-flex justify-content-center align-items-center gap-2">
                 {task.completed && (
-                    <span className="badge rounded-pill text-bg-secondary">Complete</span>
+                    <span className="badge rounded-pill text-bg-success">Complete</span>
                 )}
                 {/* Buttons for deleting and editing todo */}
-
-                <MdDelete onClick={() => deleteTodo(id)} />
-                <RiEditBoxFill onClick={() => updateTodo(id)} /> 
+                <RiDeleteBin5Fill className="text-danger " role="button" onClick={() => deleteTodo(id)} />
+                 <MdOutlineModeEditOutline role="button" className="text-md-danger fs-xl-1" onClick={() => editTodo(task)} />
             </div>
         </div>
     );
