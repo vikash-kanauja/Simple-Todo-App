@@ -2,9 +2,7 @@ import React from "react";
 import { RiDeleteBin5Fill } from "react-icons/ri";
 import { MdOutlineModeEditOutline } from "react-icons/md";
 
-
-
-const TodoItem = ({ id, task, toggleCompleteBadge, deleteTodo, editTodo }) => {
+const TodoItem = ({ id, task, showOrHideCompleteBadge, deleteTodo, editTodo }) => {
     return (
         // Container for todo item
         <div
@@ -16,7 +14,7 @@ const TodoItem = ({ id, task, toggleCompleteBadge, deleteTodo, editTodo }) => {
                     type="checkbox"
                     checked={task.completed}
                     // onChange={handleChange}
-                    onChange={()=>toggleCompleteBadge(id)}
+                    onChange={() => showOrHideCompleteBadge(id)}
                 />
                 <p className="mb-0 px-2">{task.text}</p>
             </div>
@@ -26,7 +24,7 @@ const TodoItem = ({ id, task, toggleCompleteBadge, deleteTodo, editTodo }) => {
                 )}
                 {/* Buttons for deleting and editing todo */}
                 <RiDeleteBin5Fill className="text-danger " role="button" onClick={() => deleteTodo(id)} />
-                 <MdOutlineModeEditOutline role="button" className="text-md-danger fs-xl-1" onClick={() => editTodo(task)} />
+                <MdOutlineModeEditOutline role="button" className="text-md-danger fs-xl-1" onClick={() => editTodo(task)} />
             </div>
         </div>
     );
