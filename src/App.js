@@ -1,7 +1,6 @@
 import { useState } from "react";
-import TodoItem from "./component/TodoItem.js";
 import Button from "react-bootstrap/Button";
-
+import TodoItem from "./component/TodoItem.js";
 
 function App() {
   // State variables
@@ -107,8 +106,6 @@ function App() {
             className={`${!inputError ? "opacity-10 " : ""}   border-1 border-secondary`}
             onClick={handleSubmit}
             disabled={!todoInputText.trim()}
-            
-
           >
             {editTodoId ? "Update" : "Submit"}
           </Button>{" "}

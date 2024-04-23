@@ -9,7 +9,7 @@ const TodoItem = ({ id, task, showOrHideCompleteBadge, deleteTodo, editTodo }) =
             className="list w-100 w-bg-light border align-middle p-2 d-flex justify-content-between"
             key={id} >
             {/* Todo content */}
-            <div className="d-flex pl-2">
+            <div className="d-flex pl-2 text-break">
                 <input
                     type="checkbox"
                     checked={task.completed}
