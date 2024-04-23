@@ -10,8 +10,7 @@ function App() {
   const [inputError, setInputError] = useState(true); // State for input validation
   const [editTodoId, setEditTodoId] = useState(null); // State for tracking todo item id being updated
   const [displayConfirmationModal, setDisplayConfirmationModal] = useState(false);
-  const [deleteMessage, setDeleteMessage] = useState(null);
-  const [deletTodoId, setDeleteTodoId] = useState(null);
+  const [deleteTodoId, setDeleteTodoId] = useState(null);
 
   // Function to toggle todo completion status
   const showOrHideCompleteBadge = (id) => {
@@ -70,7 +69,6 @@ function App() {
   // Handle the displaying of the modal based on type and id
   const showDeleteModal = (id) => {
     setDeleteTodoId(id);
-    setDeleteMessage(`Are you sure you want to delete the Task'?`);
     setDisplayConfirmationModal(true);
   };
 
@@ -80,7 +78,7 @@ function App() {
   };
 
   // Handle the actual deletion of the item
-  const submitDelete = (id) => {
+  const deleteTodo = (id) => {
     setTodoList(todoList.filter((data) => data.id !== id));
     setEditTodoId(null);
     setTodoInputText("");
@@ -99,7 +97,6 @@ function App() {
             key={index}
             task={task}
             showOrHideCompleteBadge={showOrHideCompleteBadge}
-            // deleteTodo={deleteTodo}
             editTodo={editTodo}
             showDeleteModal={showDeleteModal}
           />
@@ -127,7 +124,7 @@ function App() {
             {editTodoId ? "Update" : "Submit"}
           </Button>{" "}
         </div>
-        <DeleteConfirmation showModal={displayConfirmationModal} confirmModal={submitDelete} hideModal={hideConfirmationModal} id={deletTodoId} message={deleteMessage} />
+        <DeleteConfirmation showModal={displayConfirmationModal} confirmModal={deleteTodo} hideModal={hideConfirmationModal} id={deleteTodoId} message={"Are you sure you want to delete the Task ?"} />
       </div>
     </>
   );

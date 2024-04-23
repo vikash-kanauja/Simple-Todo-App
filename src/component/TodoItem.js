@@ -2,7 +2,7 @@ import React from "react";
 import { RiDeleteBin5Fill } from "react-icons/ri";
 import { MdOutlineModeEditOutline } from "react-icons/md";
 
-const TodoItem = ({ task, showOrHideCompleteBadge, showDeleteModal, deleteTodo, editTodo }) => {
+const TodoItem = ({ task, showOrHideCompleteBadge, showDeleteModal, editTodo }) => {
     return (
         // Container for todo item
         <div
