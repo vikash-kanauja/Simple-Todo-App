@@ -1,13 +1,17 @@
 import { useState } from "react";
 import Button from "react-bootstrap/Button";
 import TodoItem from "./component/TodoItem.js";
-
+import DeleteConfirmation from "./component/DeleteConfirmationPopup.js";
+// import DeleteConfirmation from "./component/DeleteConfirmationModal.js";
 function App() {
   // State variables
   const [todoList, setTodoList] = useState([]); // State for storing todo tasks
   const [todoInputText, setTodoInputText] = useState(""); // State for input value
   const [inputError, setInputError] = useState(true); // State for input validation
   const [editTodoId, setEditTodoId] = useState(null); // State for tracking todo item id being updated
+  const [displayConfirmationModal, setDisplayConfirmationModal] = useState(false);
+  const [deleteMessage, setDeleteMessage] = useState(null);
+  const [deletTodoId, setDeleteTodoId] = useState(null);
 
   // Function to toggle todo completion status
   const showOrHideCompleteBadge = (id) => {
@@ -57,17 +61,30 @@ function App() {
     }
   };
 
-  // Function to delete a todo
-  const deleteTodo = (id) => {
-    setTodoList(todoList.filter((data) => data.id !== id));
-    setEditTodoId(null);
-    setTodoInputText("");
-  };
-
   // Function to update a todo
   const editTodo = (todo) => {
     setTodoInputText(todo.text); // Set input value to todo text
     setEditTodoId(todo.id); // EditTodoId id to the id of the todo being updated
+  };
+
+  // Handle the displaying of the modal based on type and id
+  const showDeleteModal = (id) => {
+    setDeleteTodoId(id);
+    setDeleteMessage(`Are you sure you want to delete the Task'?`);
+    setDisplayConfirmationModal(true);
+  };
+
+  // Hide the modal
+  const hideConfirmationModal = () => {
+    setDisplayConfirmationModal(false);
+  };
+
+  // Handle the actual deletion of the item
+  const submitDelete = (id) => {
+    setTodoList(todoList.filter((data) => data.id !== id));
+    setEditTodoId(null);
+    setTodoInputText("");
+    setDisplayConfirmationModal(false);
   };
 
   return (
@@ -80,11 +97,11 @@ function App() {
         {todoList.map((task, index) => (
           <TodoItem
             key={index}
-            id={task.id}
             task={task}
             showOrHideCompleteBadge={showOrHideCompleteBadge}
-            deleteTodo={deleteTodo}
+            // deleteTodo={deleteTodo}
             editTodo={editTodo}
+            showDeleteModal={showDeleteModal}
           />
         ))}
         {/* Todo input form */}
@@ -110,6 +127,7 @@ function App() {
             {editTodoId ? "Update" : "Submit"}
           </Button>{" "}
         </div>
+        <DeleteConfirmation showModal={displayConfirmationModal} confirmModal={submitDelete} hideModal={hideConfirmationModal} id={deletTodoId} message={deleteMessage} />
       </div>
     </>
   );
