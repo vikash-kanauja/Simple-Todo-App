@@ -34,11 +34,6 @@ function App() {
 
   // Function to handle form submission
   const handleSubmit = (e) => {
-    // Validate input on submit
-    // if (todoInputText.trim() === "") {
-    //   setInputError(false);
-    //   return;
-    // }
     // Check if an existing todo is being updated
     if (editTodoId) {
       // Update existing todo.
